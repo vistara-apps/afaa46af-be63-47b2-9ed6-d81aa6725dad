@@ -1,143 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AppShell } from './components/AppShell';
 import { FundCard } from './components/FundCard';
 import { CreateFundModal } from './components/CreateFundModal';
 import { NotificationBanner } from './components/NotificationBanner';
 import { ConnectWallet, Wallet } from '@coinbase/onchainkit/wallet';
 import { Name, Avatar, Identity } from '@coinbase/onchainkit/identity';
-import { GroupFund, User } from '@/lib/types';
-import { generateFundId, generateMemberId } from '@/lib/utils';
+import { useFunds } from '@/lib/hooks/useFunds';
+import { ContributionButton } from './components/ContributionButton';
 import { TrendingUp, Users, Plus } from 'lucide-react';
 
 export default function HomePage() {
-  const [funds, setFunds] = useState<GroupFund[]>([]);
-  const [selectedFund, setSelectedFund] = useState<GroupFund | null>(null);
+  const { funds, loading, error, isConnected, createNewFund, contributeToFundLocal } = useFunds();
+  const [selectedFund, setSelectedFund] = useState<any>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
+  const [contributionAmount, setContributionAmount] = useState('');
 
-  // Mock user data
-  const mockUser: User = {
-    userId: 'user_1',
-    walletAddress: '0x1234...5678',
-    displayName: 'You',
-    avatar: undefined
-  };
-
-  // Initialize with sample data
-  useEffect(() => {
-    const sampleFunds: GroupFund[] = [
-      {
-        fundId: 'fund_1',
-        fundName: 'Weekend Warriors ETH Fund',
-        targetAsset: 'WETH',
-        createdByUserId: 'user_1',
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        currentAmount: 0.75,
-        targetAmount: 1.0,
-        status: 'active',
-        members: [
-          {
-            memberId: 'member_1',
-            fundId: 'fund_1',
-            userId: 'user_1',
-            joinedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-            contributionAmount: 0.3,
-            status: 'completed',
-            user: mockUser
-          },
-          {
-            memberId: 'member_2',
-            fundId: 'fund_1',
-            userId: 'user_2',
-            joinedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-            contributionAmount: 0.25,
-            status: 'completed',
-            user: {
-              userId: 'user_2',
-              walletAddress: '0xabcd...efgh',
-              displayName: 'Alice',
-              avatar: undefined
-            }
-          },
-          {
-            memberId: 'member_3',
-            fundId: 'fund_1',
-            userId: 'user_3',
-            joinedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
-            contributionAmount: 0.2,
-            status: 'completed',
-            user: {
-              userId: 'user_3',
-              walletAddress: '0x9876...5432',
-              displayName: 'Bob',
-              avatar: undefined
-            }
-          }
-        ],
-        contributions: []
-      },
-      {
-        fundId: 'fund_2',
-        fundName: 'Degen Squad Moonshot',
-        targetAsset: 'DEGEN',
-        createdByUserId: 'user_2',
-        createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
-        currentAmount: 2500,
-        targetAmount: 10000,
-        status: 'active',
-        members: [
-          {
-            memberId: 'member_4',
-            fundId: 'fund_2',
-            userId: 'user_2',
-            joinedAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
-            contributionAmount: 2500,
-            status: 'completed',
-            user: {
-              userId: 'user_2',
-              walletAddress: '0xabcd...efgh',
-              displayName: 'Alice',
-              avatar: undefined
-            }
-          }
-        ],
-        contributions: []
-      }
-    ];
-    setFunds(sampleFunds);
-  }, []);
-
-  const handleCreateFund = (fundData: {
+  const handleCreateFund = async (fundData: {
     name: string;
     targetAsset: string;
     targetAmount: number;
   }) => {
-    const newFund: GroupFund = {
-      fundId: generateFundId(),
-      fundName: fundData.name,
-      targetAsset: fundData.targetAsset,
-      createdByUserId: mockUser.userId,
-      createdAt: new Date(),
-      currentAmount: 0,
-      targetAmount: fundData.targetAmount,
-      status: 'active',
-      members: [
-        {
-          memberId: generateMemberId(),
-          fundId: generateFundId(),
-          userId: mockUser.userId,
-          joinedAt: new Date(),
-          contributionAmount: 0,
-          status: 'pending',
-          user: mockUser
-        }
-      ],
-      contributions: []
-    };
-
-    setFunds(prev => [newFund, ...prev]);
+    await createNewFund(fundData);
+    setShowCreateModal(false);
     setShowNotification(true);
   };
 
@@ -156,13 +43,48 @@ export default function HomePage() {
           </button>
           
           <FundCard fund={selectedFund} variant="detail" />
-          
+
+          {/* Contribution Section */}
+          {selectedFund.status === 'active' && isConnected && (
+            <div className="mt-8 glass-card p-6 rounded-lg">
+              <h3 className="text-lg font-semibold text-text-primary mb-4">
+                Make a Contribution
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    Contribution Amount ({selectedFund.targetAsset})
+                  </label>
+                  <input
+                    type="number"
+                    value={contributionAmount}
+                    onChange={(e) => setContributionAmount(e.target.value)}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.001"
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text-primary placeholder-text-secondary focus:border-accent focus:outline-none"
+                  />
+                </div>
+                <ContributionButton
+                  variant="primary"
+                  amount={parseFloat(contributionAmount) || 0}
+                  symbol={selectedFund.targetAsset}
+                  disabled={!contributionAmount || parseFloat(contributionAmount) <= 0}
+                  onContribute={async (amount) => {
+                    await contributeToFundLocal(selectedFund.fundId, amount);
+                    setContributionAmount('');
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="mt-8">
             <h3 className="text-lg font-semibold text-text-primary mb-4">
               Members ({selectedFund.members.length})
             </h3>
             <div className="space-y-3">
-              {selectedFund.members.map((member) => (
+              {selectedFund.members.map((member: any) => (
                 <div key={member.memberId} className="glass-card p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
@@ -244,8 +166,18 @@ export default function HomePage() {
           </Wallet>
         </div>
 
+        {/* Error Banner */}
+        {error && (
+          <NotificationBanner
+            variant="warning"
+            title="Error"
+            message={error}
+            onDismiss={() => {}} // Keep error visible until resolved
+          />
+        )}
+
         {/* Notifications */}
-        {showNotification && (
+        {showNotification && !error && (
           <NotificationBanner
             variant="info"
             title="Welcome to SquadSats!"

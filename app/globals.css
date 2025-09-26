@@ -3,14 +3,41 @@
 @tailwind utilities;
 
 :root {
-  /* Default Finance Theme - Professional Wall Street meets Crypto */
-  --color-bg: #0f1419;
-  --color-fg: #e8eaed;
-  --color-accent: #ffd700;
-  --color-primary: #1a365d;
-  --color-surface: #1e2328;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a0a3a8;
+  /* SquadSats Design System */
+  --background: hsla(210, 30%, 95%, 1);
+  --foreground: hsla(210, 20%, 20%, 1);
+  --card: hsla(0, 0%, 100%, 1);
+  --card-foreground: hsla(210, 20%, 20%, 1);
+  --popover: hsla(0, 0%, 100%, 1);
+  --popover-foreground: hsla(210, 20%, 20%, 1);
+  --primary: hsla(200, 80%, 50%, 1);
+  --primary-foreground: hsla(0, 0%, 100%, 1);
+  --secondary: hsla(210, 20%, 90%, 1);
+  --secondary-foreground: hsla(210, 20%, 20%, 1);
+  --muted: hsla(210, 20%, 90%, 1);
+  --muted-foreground: hsla(210, 15%, 40%, 1);
+  --accent: hsla(40, 90%, 50%, 1);
+  --accent-foreground: hsla(210, 20%, 20%, 1);
+  --destructive: hsla(0, 84%, 60%, 1);
+  --destructive-foreground: hsla(0, 0%, 100%, 1);
+  --border: hsla(210, 20%, 90%, 1);
+  --input: hsla(210, 20%, 90%, 1);
+  --ring: hsla(200, 80%, 50%, 1);
+  --chart-1: hsla(200, 80%, 50%, 1);
+  --chart-2: hsla(40, 90%, 50%, 1);
+  --chart-3: hsla(210, 20%, 20%, 1);
+  --chart-4: hsla(210, 15%, 40%, 1);
+  --chart-5: hsla(210, 30%, 95%, 1);
+  --radius: 12px;
+
+  /* Legacy color variables for backward compatibility */
+  --color-bg: hsla(210, 30%, 95%, 1);
+  --color-fg: hsla(210, 20%, 20%, 1);
+  --color-accent: hsla(40, 90%, 50%, 1);
+  --color-primary: hsla(200, 80%, 50%, 1);
+  --color-surface: hsla(0, 0%, 100%, 1);
+  --color-text-primary: hsla(210, 20%, 20%, 1);
+  --color-text-secondary: hsla(210, 15%, 40%, 1);
 }
 
 [data-theme="celo"] {
@@ -66,32 +93,31 @@
 
 @layer components {
   .glass-card {
-    @apply bg-surface border border-gray-700 backdrop-blur-sm;
-    background: rgba(30, 35, 40, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    @apply bg-white border border-gray-200 shadow-card rounded-lg;
+    box-shadow: 0 4px 12px hsla(210, 20%, 20%, 0.08);
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-accent to-yellow-500 text-black px-6 py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-accent transition-all duration-200 shadow-lg hover:shadow-xl;
+    @apply bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-400 transition-all duration-200 shadow-lg hover:shadow-xl;
   }
 
   .btn-secondary {
-    @apply bg-surface border border-gray-600 text-fg px-6 py-3 rounded-lg font-medium hover:bg-gray-700 transition-all duration-200;
+    @apply bg-gray-100 border border-gray-200 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200;
   }
 
   .metric-card {
-    @apply glass-card p-4 hover:bg-opacity-15 transition-all duration-200;
+    @apply glass-card p-4 hover:shadow-lg transition-all duration-200;
   }
 
   .fund-card {
-    @apply glass-card p-6 rounded-lg hover:border-accent transition-all duration-200;
+    @apply glass-card p-6 rounded-lg hover:border-yellow-500 transition-all duration-200;
   }
 
   .progress-bar {
-    @apply w-full bg-gray-700 rounded-full h-2;
+    @apply w-full bg-gray-200 rounded-full h-2;
   }
 
   .progress-fill {
-    @apply bg-gradient-to-r from-accent to-yellow-500 h-2 rounded-full transition-all duration-300;
+    @apply bg-yellow-500 h-2 rounded-full transition-all duration-300;
   }
 }
