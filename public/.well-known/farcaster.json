@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "SquadSats",
+    "subtitle": "Built with Zara",
+    "description": "SquadSats is a Base Mini App built with Zara.",
+    "iconUrl": "https://0co.to/images/zara-2.png",
+    "homeUrl": "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app",
+    "splashImageUrl": "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app/splash.png",
+    "splashBackgroundColor": "#000000",
+    "heroImageUrl": "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app/image.png",
+    "tagline": "SquadSats",
+    "screenshotUrls": [
+      "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app/screenshot.png",
+      "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "base",
+      "miniapp",
+      "onchainkit"
+    ],
+    "webhookUrl": "https://afaa46afbe6347b29ed6d81aa6725dad-jvnd.vercel.app/api/webhook"
+  }
+}
