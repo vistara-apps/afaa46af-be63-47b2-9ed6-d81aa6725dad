@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default Finance Theme - Professional Wall Street meets Crypto */
+  --color-bg: #0f1419;
+  --color-fg: #e8eaed;
+  --color-accent: #ffd700;
+  --color-primary: #1a365d;
+  --color-surface: #1e2328;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a3a8;
+}
+
+[data-theme="celo"] {
+  --color-bg: #000000;
+  --color-fg: #ffffff;
+  --color-accent: #fbcc5c;
+  --color-primary: #35d07f;
+  --color-surface: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+}
+
+[data-theme="solana"] {
+  --color-bg: #1a0d2e;
+  --color-fg: #ffffff;
+  --color-accent: #9945ff;
+  --color-primary: #14f195;
+  --color-surface: #2a1f3d;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #c4b5fd;
+}
+
+[data-theme="base"] {
+  --color-bg: #0052ff;
+  --color-fg: #ffffff;
+  --color-accent: #0052ff;
+  --color-primary: #0052ff;
+  --color-surface: #1e3a8a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #bfdbfe;
+}
+
+[data-theme="coinbase"] {
+  --color-bg: #0d1421;
+  --color-fg: #ffffff;
+  --color-accent: #0052ff;
+  --color-primary: #0052ff;
+  --color-surface: #1e293b;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #94a3b8;
+}
+
+@layer base {
+  * {
+    @apply border-gray-700;
+  }
+  
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface border border-gray-700 backdrop-blur-sm;
+    background: rgba(30, 35, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-accent to-yellow-500 text-black px-6 py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-accent transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-surface border border-gray-600 text-fg px-6 py-3 rounded-lg font-medium hover:bg-gray-700 transition-all duration-200;
+  }
+
+  .metric-card {
+    @apply glass-card p-4 hover:bg-opacity-15 transition-all duration-200;
+  }
+
+  .fund-card {
+    @apply glass-card p-6 rounded-lg hover:border-accent transition-all duration-200;
+  }
+
+  .progress-bar {
+    @apply w-full bg-gray-700 rounded-full h-2;
+  }
+
+  .progress-fill {
+    @apply bg-gradient-to-r from-accent to-yellow-500 h-2 rounded-full transition-all duration-300;
+  }
+}
